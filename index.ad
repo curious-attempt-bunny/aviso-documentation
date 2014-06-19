@@ -2,4 +2,14 @@
 title: Welcome
 ---
 
-This is generated from __AsciiDoc__, the best text format ever.
+[lead]
+--
+Documentation is currently being generated and converted. In addition, Rook
+is undergoing some significant changes.
+--
+
+At http://www.aviso.io/[Aviso] we're excited to use Clojure, and excited to
+contibute back as much as we can as open source.
+
+This growing suite of tools is part of our standard toolbelt when building applications
+in Clojure.
