@@ -1,7 +1,7 @@
 books:
 - title: Pretty
-  folder: pretty
+  dir: /pretty
 - title: Rook
-  folder: rook
+  dir: /rook
 - title: Twixt
-  folder: twixt
+  dir: /twixt

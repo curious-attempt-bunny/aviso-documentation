@@ -26,10 +26,10 @@
 <ul class="nav navbar-nav">
 {% for book in site.data.nav.books %}
   {% assign linkClass = '' %}
-  {% if book.folder == page.folder %}
+  {% if book.dir == page.dir %}
     {% assign linkClass = 'active' %}
   {% endif %}
-  <li class="{{linkClass}}"><a href="/{{book.folder}}/">{{book.title}}</a>
+  <li class="{{linkClass}}"><a href="{{book.dir}}/">{{book.title}}</a>
   </li>
 {% endfor %}
   </ul>
