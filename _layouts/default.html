@@ -7,8 +7,8 @@
     <title>Aviso Documentation: {{page.title}}</title>
 
     <!-- Bootstrap -->
-    <link href="{{site.url}}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{site.url}}/css/site.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
   </head>
   <body>
 
@@ -21,12 +21,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Aviso</a>
+          <a class="navbar-brand" href="/">Aviso</a>
         </div>
+<ul class="nav navbar-nav">
+{% for book in site.data.nav.books %}
+  <li><a href="/{{book.folder}}/">{{book.title}}</a>
+  </li>
+{% endfor %}
+  </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="https://github.com/AvisoNovate">GitHub</a>
+          </li>
+        </ul>
       </div>
     </div>
 
     <div class="container">
+
         <h1>{{ page.title }}</h1>
     {{content}}
     </div>
@@ -34,6 +45,6 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{site.url}}/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
