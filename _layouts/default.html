@@ -24,10 +24,12 @@
           <a class="navbar-brand" href="/">Aviso</a>
         </div>
 <ul class="nav navbar-nav">
+{% assign activeBook = nil %}
 {% for book in site.data.nav.books %}
   {% assign linkClass = '' %}
   {% if book.dir == page.dir %}
     {% assign linkClass = 'active' %}
+    {% assign activeBook = book %}
   {% endif %}
   <li class="{{linkClass}}"><a href="{{book.dir}}/">{{book.title}}</a>
   </li>
@@ -42,8 +44,41 @@
 
     <div class="container">
 
-        <h1>{{ page.title }}</h1>
+        {% if activeBook %}
+        <ol class="breadcrumb">
+        {% if page.name != "index.ad" %}
+          <li><a href="./">{{activeBook.title}}</a></li>
+        {% endif %}
+          <li class="active">{{page.title}}
+        </ol>
+        {% endif %}
+
+        <div class="row">
+        <div class="col-md-3">
+{% if activeBook %}
+        <ul class="nav nav-pills nav-stacked">
+{% for pageName in activeBook.pages %}
+<!-- Could not figure out how to get where: filter to do this, so sloppy! -->
+{% for navPage in site.pages %}
+{% if navPage.dir == activeBook.dir and navPage.name == pageName %}
+{% assign linkClass = '' %}
+{% if navPage.name == page.name %}
+  {% assign linkClass = 'active' %}
+{% endif %}
+        <li class="{{linkClass}}">
+          <a href="{{navPage.url}}">
+{% if navPage.navTitle %}{{navPage.navTitle}}{% else %}{{navPage.title}}{% endif %}
+          </a>
+        </li>
+{% endif %}        
+{% endfor %}
+{% endfor %}
+      </ul>
+{% endif %}
+        </div>
+        <div class="col-md-9">
     {{content}}
+    </div>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

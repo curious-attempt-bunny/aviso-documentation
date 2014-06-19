@@ -1,7 +1,8 @@
 books:
 - title: Pretty
-  dir: /pretty
+  dir: /pretty  
 - title: Rook
   dir: /rook
+  pages: [index.ad, pathspec.ad]
 - title: Twixt
   dir: /twixt
