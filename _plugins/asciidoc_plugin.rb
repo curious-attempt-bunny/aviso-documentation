@@ -27,7 +27,6 @@ module Jekyll
 
       def setup
         return if @setup
-        puts "AsciiDocConverter - setup"
         case @config['asciidoc']
           when 'asciidoctor'
             begin
@@ -47,7 +46,7 @@ module Jekyll
       end
       
       def matches(ext)
-        puts "AsciiDocConverter -- matches #{ext}"
+        # See pull request https://github.com/asciidoctor/jekyll-asciidoc/pull/6
         rgx = '(' + @config['asciidoc_ext'].gsub(',','$|') +'$)'
         ext =~ Regexp.new(rgx, Regexp::IGNORECASE)
       end
@@ -58,7 +57,6 @@ module Jekyll
 
       def convert(content)
         setup
-        puts "AsciiDocConverter -- convert"
         case @config['asciidoc']
         when 'asciidoctor'
           Asciidoctor.render(content, @config['asciidoctor'])
