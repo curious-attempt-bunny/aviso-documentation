@@ -7,8 +7,8 @@
     <title>Aviso Documentation: {{page.title}}</title>
 
     <!-- Bootstrap -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/site.css" rel="stylesheet">
+    <link href="{{site.baseurl}}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{site.baseurl}}/css/site.css" rel="stylesheet">
   </head>
   <body>
 
@@ -21,7 +21,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Aviso</a>
+          <a class="navbar-brand" href="{{site.baseurl}}/">Aviso</a>
         </div>
 <ul class="nav navbar-nav">
 {% assign activeBook = nil %}
@@ -31,7 +31,7 @@
     {% assign linkClass = 'active' %}
     {% assign activeBook = book %}
   {% endif %}
-  <li class="{{linkClass}}"><a href="{{book.dir}}/">{{book.title}}</a>
+  <li class="{{linkClass}}"><a href="{{site.baseurl}}{{book.dir}}/">{{book.title}}</a>
   </li>
 {% endfor %}
   </ul>
@@ -65,7 +65,7 @@
   {% assign linkClass = 'active' %}
 {% endif %}
         <li class="{{linkClass}}">
-          <a href="{{navPage.url}}">
+          <a href="{{site.baseurl}}{{navPage.url}}">
 {% if navPage.navTitle %}{{navPage.navTitle}}{% else %}{{navPage.title}}{% endif %}
           </a>
         </li>
@@ -86,10 +86,9 @@
 {% endif %}
 
     </div>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{site.url}}/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
