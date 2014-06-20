@@ -52,11 +52,9 @@
         {% endif %}
           <li class="active">{{page.title}}
         </ol>
-        {% endif %}
 
         <div class="row">
         <div class="col-md-3">
-{% if activeBook %}
         <ul class="nav nav-pills nav-stacked">
 {% for pageName in activeBook.pages %}
 <!-- Could not figure out how to get where: filter to do this, so sloppy! -->
@@ -75,11 +73,18 @@
 {% endfor %}
 {% endfor %}
       </ul>
-{% endif %}
         </div>
         <div class="col-md-9">
     {{content}}
     </div>
+{% else %}
+<!-- Not in a book, on the home page. This would probably be better solved
+     by using two layouts. -->
+
+{{content}}     
+
+{% endif %}
+
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
