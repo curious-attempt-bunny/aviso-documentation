@@ -75,6 +75,9 @@
 {% if activeBook.api %}
   <li><a href="{{activeBook.api}}">{{activeBook.title}} API</a></li>
 {% endif %}
+{% if activeBook.github %}
+  <li><a href="{{activeBook.github}}">GitHub</a></li>
+{% endif %}
       </ul>
         </div>
         <div class="col-md-9">

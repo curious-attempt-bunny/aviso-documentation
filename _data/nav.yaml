@@ -1,7 +1,8 @@
 books:
 - title: Pretty
   dir: /pretty 
-  api: http://howardlewisship.com/io.aviso/pretty/ 
+  api: http://howardlewisship.com/io.aviso/pretty/
+  github: https://github.com/AvisoNovate/pretty
   # index.ad should be implicit ... but my lack of understanding of Jekyll
   # makes it easier to just include it.
   pages: [index.ad, exceptions.ad, repl.ad, ansi.ad, binary.ad, columns.ad]
