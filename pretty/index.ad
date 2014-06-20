@@ -1,5 +1,20 @@
 ---
 title: Pretty
+navTitle: About Pretty
 ---
 
-Pretty makes Clojure a bit prettier.
+# Sometimes, neatness counts
+
+image:http://clojars.org/io.aviso/pretty/latest-version.svg[Clojars Project, link="http://clojars.org/io.aviso/pretty"]
+
+If you are trying to puzzle out a stack trace, 
+pick a critical line of text out of a long stream of console output,
+or compare two streams of binary data, a little bit of formatting can go a long way.
+
+That's what _io.aviso/pretty_ is for.  It adds support for pretty output where it counts:
+
+* ANSI font and background color support
+* Hex dump of binary data
+* Hex dump of binary deltas
+* Readable output for exceptions
+* Formatting data into columns

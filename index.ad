@@ -11,5 +11,7 @@ is undergoing some significant changes.
 At http://www.aviso.io/[Aviso] we're excited to use Clojure, and excited to
 contibute back as much as we can as open source.
 
+All of our libraries use the Apache Software License 2.0.
+
 This growing suite of tools is part of our standard toolbelt when building applications
 in Clojure.

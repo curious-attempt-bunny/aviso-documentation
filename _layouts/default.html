@@ -21,7 +21,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{site.baseurl}}/">Aviso</a>
+          <a class="navbar-brand" href="{{site.baseurl}}/">Aviso Docs</a>
         </div>
 <ul class="nav navbar-nav">
 {% assign activeBook = nil %}
@@ -72,6 +72,9 @@
 {% endif %}        
 {% endfor %}
 {% endfor %}
+{% if activeBook.api %}
+  <li><a href="{{activeBook.api}}">{{activeBook.title}} API</a></li>
+{% endif %}
       </ul>
         </div>
         <div class="col-md-9">

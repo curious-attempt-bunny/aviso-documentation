@@ -1,6 +1,10 @@
 books:
 - title: Pretty
-  dir: /pretty  
+  dir: /pretty 
+  api: http://howardlewisship.com/io.aviso/pretty/ 
+  # index.ad should be implicit ... but my lack of understanding of Jekyll
+  # makes it easier to just include it.
+  pages: [index.ad, exceptions.ad, repl.ad, ansi.ad, binary.ad, columns.ad]
 - title: Rook
   dir: /rook
   pages: [index.ad, pathspec.ad]
