@@ -8,6 +8,10 @@ books:
   pages: [index.ad, exceptions.ad, repl.ad, ansi.ad, binary.ad, columns.ad]
 - title: Rook
   dir: /rook
+  api: http://howardlewisship.com/io.aviso/rook/
+  github: https://github.com/AvisoNovate/rook  
   pages: [index.ad, pathspec.ad]
 - title: Twixt
   dir: /twixt
+  api: http://howardlewisship.com/io.aviso/twixt/
+  github: https://github.com/AvisoNovate/twixt  
