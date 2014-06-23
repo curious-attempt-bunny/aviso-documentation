@@ -15,6 +15,6 @@ books:
   dir: /twixt
   api: http://howardlewisship.com/io.aviso/twixt/
   github: https://github.com/AvisoNovate/twixt  
-  pages: [index.ad, getting-started.ad, urls.ad, exceptions.ad, 
+  pages: [index.ad, getting-started.ad, uris.ad, exceptions.ad, 
           jade.ad, stacks.ad, 
           caching.ad, jsmin.ad, configuration.ad, direct-uris.ad, notes.ad]

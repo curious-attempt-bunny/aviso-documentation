@@ -1,8 +1,8 @@
 ---
-title: Asset URLs
+title: Asset URIs
 ---
 
-At its core, Twixt is a set of Ring middleware that maps certain URL patterns to matching files on the classpath,
+At its core, Twixt is a set of Ring middleware that maps certain URI patterns to matching files on the classpath,
 and does some transformations along the way.
 
 Currently, the mapping is very straightforward: the path +/assets/123abc/css/style.less+ is mapped to resource
