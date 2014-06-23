@@ -15,3 +15,4 @@ books:
   dir: /twixt
   api: http://howardlewisship.com/io.aviso/twixt/
   github: https://github.com/AvisoNovate/twixt  
+  pages: [index.ad, getting-started.ad, exceptions.ad]
