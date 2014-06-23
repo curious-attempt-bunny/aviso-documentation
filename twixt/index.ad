@@ -23,6 +23,10 @@ Twixt currently supports:
 * JavaScript Minimization (using https://developers.google.com/closure/compiler/[Google Closure])
 * Jade to HTML compilation (using https://github.com/neuland/jade4j[jade4j])
 * Less to CSS compilation (using https://github.com/SomMeri/less4j[less4j])
-* JavaScript and CSS aggregation
+* link:stacks.html[JavaScript and CSS aggregation]
 * File system caching of compiled content
 * Automatic GZip compression
+
+== Stability
+
+*Alpha*: Many features are not yet implemented and the code is likely to change in many ways going forward ... but still very useful!

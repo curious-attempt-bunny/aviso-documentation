@@ -45,6 +45,6 @@ as compilation of some resources, such as CoffeeScript, can take several seconds
 the Rhino JavaScript engine).
 
 The Twixt API includes alternate functions for constructing both the Ring middleware, and Twixt's own
-asset pipeline; this allows you to add new features, or eliminate unwanted features. Please reference the
+asset pipeline; this allows you to add new features, or exclude unwanted features. Please reference the
 code to see how to configure Twixt options, assemble the Twixt asset pipeline, and finally, provide the necessary
 Ring middleware.
