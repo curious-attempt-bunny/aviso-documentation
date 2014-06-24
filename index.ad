@@ -15,3 +15,22 @@ All of our libraries use the Apache Software License 2.0.
 
 This growing suite of tools is part of our standard toolbelt when building applications
 in Clojure.
+
+|===
+|Name |Description |Clojars |Build
+
+|link:pretty[Pretty]
+|Pretty exceptions and output
+|image:http://clojars.org/io.aviso/pretty/latest-version.svg[Clojars Project, link="http://clojars.org/io.aviso/pretty"]
+|
+
+|link:rook[Rook]
+|Sane, smart, fast, Clojure web services
+|image:http://clojars.org/io.aviso/rook/latest-version.svg[Clojars Project, link="http://clojars.org/io.aviso/rook"]
+|image:https://drone.io/github.com/AvisoNovate/rook/status.png[Build Status, link="https://drone.io/github.com/AvisoNovate/rook"]
+
+|link:twixt[Twixt]
+|Awesome asset management for Clojure web applications
+|image:http://clojars.org/io.aviso/twixt/latest-version.svg[Clojars Project, link="http://clojars.org/io.aviso/twixt"]
+|image:https://drone.io/github.com/AvisoNovate/twixt/status.png[Build Status, link="https://drone.io/github.com/AvisoNovate/twixt"]
+|===
