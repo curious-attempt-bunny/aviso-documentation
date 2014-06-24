@@ -75,14 +75,14 @@ A request handler function should return a Ring response map (with keys :status,
 
 Any public function in a resource namespace may be a request handler function; for those not covered by the conventions, it's just a matter of providing the correct metadata.
 
-`:route-spec`::
+$$:route-spec$$::
 A route spec consists of a vector of two values; the first is a keyword for the HTTP method.
 The second value is itself a vector of path elements. The path elements can be strings, or
 keywords.
 
 The keyword is one of :get, :put, :post, :delete, :patch, or a special value, :all (which matches any HTTP method).
 
-`:path-spec`::
+$$:path-spec$$::
 A path spec consists of two values: the HTTP method keyword, and a string, such as "/:id/activate".  The string is parsed apart to form the same data as a route spec.
 
 .Example
