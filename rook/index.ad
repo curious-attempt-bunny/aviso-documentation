@@ -3,4 +3,26 @@ title: Rook
 navTitle: About Rook
 ---
 
-Rook is about sane, smart, fast, Clojure web services.
+= Sane, smart, fast, Clojure web services
+
+image:http://clojars.org/io.aviso/rook/latest-version.svg[Clojars Project, link="http://clojars.org/io.aviso/rook"]
+
+image:https://drone.io/github.com/AvisoNovate/rook/status.png[Build Status, link="https://drone.io/github.com/AvisoNovate/rook"]
+
+Rook is a library for building web services in Clojure. It is designed for use with
+link:https://github.com/ring-clojure/ring[Ring].
+
+Ring combines several features together:
+
+* Conventions and metadata driven mappings of URIs to resource handler functions
+
+* Fast and scalable request dispatch
+
+* Request validation using link:https://github.com/Prismatic/schema[Prismatic Schema]
+
+* Optional asynchronous processing pipeline based on https://github.com/clojure/core.async[Clojure core.async]
+
+* Development-friendly environment
+
+WARNING: Ring is currently undergoing some significant redesign for the upcoming
+0.1.10 release. It is very much still alpha.
