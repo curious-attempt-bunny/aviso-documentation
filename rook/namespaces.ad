@@ -1,0 +1,164 @@
+---
+title: Namespaces
+---
+
+In Rook, an application is a collection of resources; each resource is mapped to a
+namespace and the functions within that namespace.
+
+The io.aviso.rook/namespace-handler function is responsible for the mapping.
+
+It is passed a collection of namespace specifications and returns a single Ring request handler.
+The handler will interrogate the Ring request's :uri and :request-method keys,
+identify the exact resource handler function for the request,
+and invoke that function, passing the link:arguments.html[appropriate arguments].
+
+As a side note: each request handler function will encapsulated as a Ring request handler,
+then wrapped with a specific set of middleware. Some parts of the middleware are useful
+for Rook's execution, but the rest is open for application logic.
+
+This middleware is intended for purposes such as:
+
+* link:schema.html[Input validation]
+* User authentication
+* Protection against denial of service attacks
+* System metrics collection
+* etc.
+
+== Basic Namespace Mapping
+
+The simplest version of namespace mapping is to simply provide a list of 
+namespace specs:
+
+[source,clojure]
+----
+(namespace-handler
+  [["orders"] 'org.example.resources.orders]
+  [["users"] 'org.example.resources.users])
+----
+
+This example maps +/orders+ to the contents of the orders namespace, and
++/users+ to the contents of the users namespace.
+
+The route at the start of each entry can have multiple values, and can even include
+keywords; we'll see how that is useful shortly.
+
+Rook will load the namespace automatically; there's no need to require the namespace; just pass the symbol.
+
+== Mapping with Middleware
+
+You may apply middleware to the functions of a namespace, by providing a middleware
+function after the namespace symbol.
+
+
+[source,clojure]
+----
+(namespace-handler
+  [["orders"] 'org.example.resources.orders auth-middleware]
+  [["users"] 'org.example.resources.users auth-middleware])
+----
+
+_Currently_ the function is a standard Rook middleware function:  A function that accepts
+a handler and return a new handler.
+
+Rook places a new key into the Ring request map, :rook. 
+This is a map that contains some Rook internal data, but also a :metadata key.
+
+:metadata contains a merge of the function's metadata, with that of the containing namespace. The function's metadata has precendence.
+
+In this way, middleware can check for certain conditions in the request or the metadata.
+
+For example:
+
+[source,clojure]
+----
+(defn wrap-permissions-auth
+  "Adds authentication that, when the :required-permissions metadata is present, ensures that
+  the user (identified via authentication headers) has the necessary permissions.
+  Permission names may be identified as strings or keywords."
+  [handler]
+  (fn [request]
+    (if-let [permissions (-> request :rook :metadata :required-permissions to-permission-set)]
+      (check-for-permissions handler request permissions)
+      (handler request))))
+----
+
+On every request, the :required-permissions key of the function's metadata will be checked; if it is present, then the user will be authenticated and permissions enforced.      
+
+WARNING: We are considering some further changes to Rook that will slightly change
+the definition of middleware applied inside the namespace handler; more metadata about
+the resource handler function will be passed to the wrapping functions.
+
+== Default Middleware
+
+It is quite common for nearly all namespaces to have the same middleware needs.
+
+namespace-handler supports an initial map of options; using these options it is
+possible to define the default middleware for namespaces.
+
+[source,clojure]
+----
+(namespace-handler
+  {:default-middleware auth-middleware}
+  [["orders"] 'org.example.resources.orders]
+  [["users"] 'org.example.resources.users])
+----
+
+The default middleware only applies to namespaces with no explicit middleware.
+
+== Nested Namespaces
+
+In many real world cases, resources are nested. For example, you application may be modelling hotels; each hotel contains rooms that can be booked by customers.
+
+The URI for a hotel may be something like +/hotels/_12345_+; a room within the hotel may be expressed as an extension of that URI:  +/hotels/_12345_/rooms/237+.
+
+The room number, 237, is not meaningful without the hotel it is contained in.
+
+This is a case of a nested resource and the namespace should also be nested.
+
+In a namespace spec, after the optional middleware, it is possible to have a nested
+set of middleware specs.  
+
+[source,clojure]
+----
+(namespace-handler
+  [["hotels"] 'org.example.resources.hotels
+    [[:hotel-id "rooms"] 'org.example.resources.rooms]])
+----
+
+Nowe, every resource handler function inside the rooms namespace will have the
+[:hotel-id "rooms"] prefix. hotel-id will be a resolvable argument.
+
+An example function might be to book a room with a URI like +/hotels/_12345_/rooms/237/book+:
+
+[source,clojure]
+----
+(defn book-room
+      {:route-spec [:post [:room-id "book"]]}
+      [hotel-id room-id  {:keys [customer-id start-date end-date] :as params*}]
+      ...)
+----
+
+Any number of namespaces may be nested this way: for example, a hotel may also rent conferences spaces and function halls.
+
+In addition, it is possible to specify overriding options, as a map, just before
+the first nested namespace spec.
+
+== Context Path
+
+It is common to want to place your resources under a common prefix; such as +/api+.
+
+Rook doesn't use link:https://github.com/weavejester/compojure[Compojure] (which as a context macro for this purpose).
+
+Instead another namespace-handler option can be used:  :context-pathvec.
+
+This value is a series of path elements that are prefixed to any paths.
+
+[source,clojure]
+----
+(namespace-handler
+  {:context-path-vec ["api"]
+   :default-middleware auth-middleware}
+  [["hotels"] 'org.example.resources.hotels
+    [[:hotel-id "rooms"] 'org.example.resources.rooms]])
+----
+
