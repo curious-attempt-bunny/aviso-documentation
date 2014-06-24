@@ -1,0 +1,145 @@
+---
+title: Function Arguments
+---
+
+In the link:getting-started.html[Getting Started] page showed how Rook can not only
+invoke your function, but pass it specific data it needs. 
+So far, we've just seen that keywords in the request path can be provided as arguments.
+
+That's just the tip of of the iceberg.
+Rook is designed so that you can write your resource handler function as pure functions
+footnote:[Pure in the sense of not relying on globals, not pure as in "side effect free".]
+The goal here is to make you code testable and agile.
+
+Rook uses a set of naming conventions and metdata to determine the value to
+in each argument to your function. This is called _argument resolution_.
+
+Deep down, the standard case is that each argument will be resolved as a function applied
+to the Ring request; this usually means getting a key from the map, or navigating a
+path starting the Ring request. 
+
+The trick, of course, is to ensure that the _correct_ argument resolver function is identified (or constructed) for each argument.
+
+Let's start with the some default behaviors.
+
+== Convention Names
+
+The name of the argument itself may be all Rook needs to resolve the argument.
+
+.Convention Names
+|===
+|Argument Symbol |Argument Value
+
+|request
+|The Ring request map.
+
+|params
+|The contents of the Ring request :params key. This contains all submitted query and form parameters.
+
+|params*
+|Same as params, but with the top-level keys 'Clojureized' footnote:[Embedded underscore are converted to dashes, e.g. :user_id to :user-id. This can be convienient when exposing
+a resource designed to be easily accessible using JSON and client-side JavaScript.]
+
+|resource-uri
+|The URI for the namespace containing the function. See the notes on
+link:resource-uri.html[calculating the Resource URI].
+|===
+
+In addition, if the link:getting-started.html[route spec] for the function contains any keywords, then those are resolvable as well with no additional configuration or metadata.
+
+TIP: It is ok to use map destructuring on an argument, but then you must use the :as key to identify its name, so that Rook can determine the argument's name, for determining argument resolution.
+
+.Example
+[source,clojure]
+----
+(defn index [{:keys [page sort per-page] :as params}]
+  ...)
+----
+
+Here, Rook uses the argument's name, params, to determine what to inject (the :params key of the Ring request map).
+The argument is destructured to get the individual query parameters passed in the request.
+
+== Argument Tagging
+
+Another way to specify argument resolution is with metadata tags; these tags can have any value, and indicate a particular resolution.
+
+.Metadata Tags
+|===
+|Tag |Argument Value
+
+|:request
+|The Ring request itself.
+
+|:request-key
+|The argument symbol is converted to a keyword, 
+ the resolved value is the value in the Ring request map for that key.
+
+|:header
+|The argument symbol is converted to a string, and used to access a value in the :headers map of the Ring request.
+
+|:param
+|The argument value is converted to a keyword, and used to access a value in the :params map of the Ring request
+
+|:injection
+|The argument value is converted to a keyword, and used to access an link:injection.html[injection] associated with the Ring request
+
+|:resource-uri
+|The argument is resolved to the containing namespace's link:resource-uri.html[resource URI].
+
+|===
+
+.Example
+
+[source,clojure]
+----
+(defn index
+  [id
+   ^:header if-modified-since
+   ^:injection db-connection]
+   ...)
+----
+
+In this example, the id argument is resolved from a route param (because the convention route for functions named 'index' has a :id keyword).  The if-modified-since argument is a header (with matching name), and the db-connection parameter is a injected value. We'll discuss how to link:injection.html[configure injection] in a later section.
+
+WARNING: You should have at most one of these tags on any single parameter; having multiple
+will result in a runtime exception.
+
+== Argument Resolver Metadata
+
+An argument may have metadata with key :io.aviso.rook/resolver.
+
+The value for this metadata is either a keyword from the list of Metadata tags _or_ an
+argument resolver function.
+
+This feature is not used very often.
+
+== Namespace Argument Resolver Metadata
+
+The namespace may define a map used to identify argument resolvers, as key :arg-resolvers.
+
+The keys of this map are symbols; the values for the map are either a tag keyword, or an
+argument resolver function.
+
+In this way, a common argument used in many resource handler functions can have its
+argument resolution strategy defined once. In the example above, the if-modified-since argument may appear in multiple functions, and would only need to be linked as a :header
+once.
+
+== Dynamic Argument Resolvers
+
+This is the older form of argument resolution used in Rook 0.1.9 and earlier; it is likely
+going to be removed in 0.1.10 so it is not currently discussed.
+
+Dynamic arguments must be resolved on every invocation of the request handler function; part of the focus in release 0.1.10 is to eliminate this dynamic search and instead statically determine (exclusively by metadata and conventions) what the correct
+argument resolver is for each function.
+
+== Resolver Priority
+
+Finding the argument resolver for an argument involves checks in the following order:
+
+* As a route parameter footnote:If you define a keyword in a routing spec, that takes precedence over everything else; it is not possible to change the argument name or resolution strategy.
+* The namespace's :arg-resolvers metadata
+* The :io.aviso.rook/resolver metadata on the argument
+* By metadata tag
+* By convention name
+* As a dynamic argument (see note above)
+

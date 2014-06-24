@@ -10,7 +10,7 @@ books:
   dir: /rook
   api: http://howardlewisship.com/io.aviso/rook/
   github: https://github.com/AvisoNovate/rook  
-  pages: [index.ad, getting-started.ad]
+  pages: [index.ad, getting-started.ad, arguments.ad]
 - title: Twixt
   dir: /twixt
   api: http://howardlewisship.com/io.aviso/twixt/
