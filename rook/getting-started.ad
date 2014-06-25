@@ -123,12 +123,15 @@ several reasons), but it will suffice to show the essentials:
 
 (defn start-server
    [port]
-   (let [handler (rook/namespace-handler
-                       [["users"] 'org.example.resources.users])]
+   (let [handler (-> (rook/namespace-handler
+                       [["users"] 'org.example.resources.users])
+                      rook/wrap-with-standard-middleware)]
      (jetty/run-jetty handler {:port port :join? false})))
 ----
 
 The namespace-handler function is provided with details about one or more namespaces to match; in this case, the mapping is from the URI +/users+ to the `users` namespace.
+
+The wrap-with-standard-middleware function uses standard Ring middleware to handle JSON or EDN requests, to parse query and form parameters, and to convert parameter keys from strings to keywords. Some of the support in Ring, especially that related to argument resolution, requires this.
 
 The result is a Ring request handler that takes care of dispatch directly to the request handler function (as well as quite a few things we have yet to discuss).
 
