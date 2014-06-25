@@ -44,6 +44,9 @@ keywords; we'll see how that is useful shortly.
 
 Rook will load the namespace automatically; there's no need to require the namespace; just pass the symbol.
 
+namespace-handler will scale to hundreds of namespaces and thousands of
+request handler functions without sacrificing speed.
+
 == Mapping with Middleware
 
 You may apply middleware to the functions of a namespace, by providing a middleware
@@ -161,4 +164,9 @@ This value is a series of path elements that are prefixed to any paths.
   [["hotels"] 'org.example.resources.hotels
     [[:hotel-id "rooms"] 'org.example.resources.rooms]])
 ----
+
+          
+
+
+
 
