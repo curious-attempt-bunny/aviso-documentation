@@ -8,8 +8,8 @@ The Async support is based on https://github.com/clojure/core.async[Clojure core
 A reasonable understanding of core.async is expected, to understand Rook's async support.
 
 In a nutshell, when processing async, request handler functions no longer return
-a response directly; instead they must return a channel to which they response map
-will be put (using core.async's >!, >!!, or put! functions).
+a response directly; instead they must return a channel to which the response map
+will be put (using core.async's >!, >!!, or put! functions), when ready.
 
 In many cases, the request handler function will use a core.async go or thread block,
 which automates the creation of the response channel, and the writing of the
@@ -21,7 +21,7 @@ Usng async, fewer threads can handle a large load (this is especially true when
 using end-to-end async). As requests come in, they consume some memory on the heap,
 rather than tying up an entire request processing thread.
 
-Async makes it easie to apply a timeout to the processing of the request, as the
+Async makes it easier to apply a timeout to the processing of the entire request, as the
 request comes into the system. This makes it easier for the system to respond
 to sudden increases in load.
 
@@ -35,7 +35,7 @@ Async allows select operations to work in parallel that would otherwise have to 
 The memory and other overhead of using async has yet to be quantified.
 
 It can be somewhat harder to debug failures in asynchronous code; this is because
-go that executes inside a go or thread block runs on a new thread.
+code that executes inside a go or thread block runs on a new thread.
 Exceptions that occur provide very little contextual information in their stack trace.
 
 Some middleware, including common middleware related to session management, must be rewritten for async.
@@ -73,8 +73,7 @@ a normal response.
 ----
 
 async-handler->ring-handler is defined by the io.aviso.rook.async namespace; it uses
-a blocking take (<!!) to retrieve the response map, and returns that.
-
+a blocking take (<!!) to retrieve the response map, and returns that map.
 
 == Async Middleware
 
@@ -147,4 +146,27 @@ or returns the response unchanged.
 safe-go is a macro that builds on core.async's go, but generates a 500 response if the
 body of the macro throws an exception.
 
-*To Be Continued*
+== Sync Handlers
+
+In many cases, perhaps the majority of cases, the resource handler functions do not peform an asynchronous
+work; typically, they execute some number of database queries (which, since Java JDBC is a blocking API,
+can not benefit from asynchronicity). 
+
+By adding the :sync metadata to a function, the function can be implemented as synchronous code; that is
+it doesn't need to use an explicit go or thread block, and can simply return a response map (or nil), not
+a channel.
+
+.Example
+[source,clojure]
+----
+(def index 
+  {:sync true}
+  [id ^:injected db-channel]
+  ...)
+----
+
+Rook will execute this using the previously mentioned safe-thread macro (any thrown exceptions will be
+converted to a 500 response).
+
+It is common for _all_ functions in a namespace to be synchronous; in that case, you may move the :sync
+meta data to the namespace and it will apply to all functions within the namespace.

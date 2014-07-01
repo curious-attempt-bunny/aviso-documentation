@@ -11,7 +11,8 @@ books:
   dir: /rook
   api: http://howardlewisship.com/io.aviso/rook/
   github: https://github.com/AvisoNovate/rook  
-  pages: [index.ad, getting-started.ad, arguments.ad, namespaces.ad, async.ad]
+  pages: [index.ad, getting-started.ad, arguments.ad, namespaces.ad, async.ad, 
+    end-to-end.ad, loopbacks.ad]
   
 - title: Twixt
   dir: /twixt

@@ -12,7 +12,8 @@ The handler will interrogate the Ring request's :uri and :request-method keys,
 identify the exact resource handler function for the request,
 and invoke that function, passing the link:arguments.html[appropriate arguments].
 
-As a side note: each request handler function will encapsulated as a Ring request handler,
+As a side note: each resource handler function (a function of many arguments) 
+will encapsulated as a Ring request handler (of function of a single argument, the Ring request map),
 then wrapped with a specific set of middleware. Some parts of the middleware are useful
 for Rook's execution, but the rest is open for application logic.
 
