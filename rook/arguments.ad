@@ -2,8 +2,8 @@
 title: Function Arguments
 ---
 
-In the link:getting-started.html[Getting Started] page showed how Rook can not only
-invoke your function, but pass it specific data it needs. 
+The link:getting-started.html[Getting Started] page showed how Rook can not only
+invoke your function, but pass it specific data needed by the function. 
 So far, we've just seen that keywords in the request path can be provided as arguments.
 
 That's just the tip of of the iceberg.
@@ -16,11 +16,15 @@ in each argument to your function. This is called _argument resolution_.
 
 Deep down, the standard case is that each argument will be resolved as a function applied
 to the Ring request; this usually means getting a key from the map, or navigating a
-path starting the Ring request. 
+path starting from the Ring request. 
 
 The trick, of course, is to ensure that the _correct_ argument resolver function is identified (or constructed) for each argument.
 
 Let's start with the some default behaviors.
+
+== Path Keywords
+
+Arguments whose name matches a keyword in the path resolve to the value from the path, as a string. This is a route parameter, and the values are stored as a map in the Ring request as :route-params.
 
 == Convention Names
 
@@ -45,8 +49,6 @@ a resource designed to be easily accessible using JSON and client-side JavaScrip
 link:resource-uri.html[calculating the Resource URI].
 |===
 
-In addition, if the link:getting-started.html[route spec] for the function contains any keywords, then those are resolvable as well with no additional configuration or metadata.
-
 TIP: It is ok to use map destructuring on an argument, but then you must use the :as key to identify its name, so that Rook can determine the argument's name, for determining argument resolution.
 
 .Example
@@ -68,7 +70,7 @@ Another way to specify argument resolution is with metadata tags; these tags can
 |Tag |Argument Value
 
 |:request
-|The Ring request itself.
+|The Ring request itself. The name of the argument is ignored.
 
 |:request-key
 |The argument symbol is converted to a keyword, 
@@ -78,10 +80,10 @@ Another way to specify argument resolution is with metadata tags; these tags can
 |The argument symbol is converted to a string, and used to access a value in the :headers map of the Ring request.
 
 |:param
-|The argument value is converted to a keyword, and used to access a value in the :params map of the Ring request
+|The argument value is converted to a keyword, and used to access a value in the :params map of the Ring request.
 
 |:injection
-|The argument value is converted to a keyword, and used to access an link:injection.html[injection] associated with the Ring request
+|The argument value is converted to a keyword, and used to access an link:injection.html[injection] associated with the Ring request.
 
 |:resource-uri
 |The argument is resolved to the containing namespace's link:resource-uri.html[resource URI].
@@ -99,7 +101,7 @@ Another way to specify argument resolution is with metadata tags; these tags can
    ...)
 ----
 
-In this example, the id argument is resolved from a route param (because the convention route for functions named 'index' has a :id keyword).  The if-modified-since argument is a header (with matching name), and the db-connection parameter is a injected value. We'll discuss how to link:injection.html[configure injection] in a later section.
+In this example, the id argument is resolved from a route param (because the convention route for functions named 'index' has a :id keyword).  The link:http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25[if-modified-since] argument is a header (with matching name), and the db-connection parameter is a injected value. We'll discuss how to link:injection.html[configure injection] in a later section.
 
 WARNING: You should have at most one of these tags on any single parameter; having multiple
 will result in a runtime exception.
@@ -124,19 +126,33 @@ In this way, a common argument used in many resource handler functions can have 
 argument resolution strategy defined once. In the example above, the if-modified-since argument may appear in multiple functions, and would only need to be linked as a :header
 once.
 
+.Example
+[source,clojure]
+----
+(ns org.example.users
+  "Rook resource for accessing users."
+  {:arg-resolvers 
+    {if-modified-since :header
+     db-connection :injection}})
+
+(defn index 
+  [id if-modified-since db-connection] 
+  ...)     
+----
+
 == Dynamic Argument Resolvers
 
 This is the older form of argument resolution used in Rook 0.1.9 and earlier; it is likely
 going to be removed in 0.1.10 so it is not currently discussed.
 
 Dynamic arguments must be resolved on every invocation of the request handler function; part of the focus in release 0.1.10 is to eliminate this dynamic search and instead statically determine (exclusively by metadata and conventions) what the correct
-argument resolver is for each function.
+argument resolver is for each argument of each function.
 
 == Resolver Priority
 
 Finding the argument resolver for an argument involves checks in the following order:
 
-* As a route parameter footnote:If you define a keyword in a routing spec, that takes precedence over everything else; it is not possible to change the argument name or resolution strategy.
+* As a route parameter footnote:[If you define a keyword in a routing spec, that takes precedence over everything else; it is not possible to change the argument name or resolution strategy].
 * The namespace's :arg-resolvers metadata
 * The :io.aviso.rook/resolver metadata on the argument
 * By metadata tag
