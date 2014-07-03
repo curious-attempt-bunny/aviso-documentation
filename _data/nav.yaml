@@ -12,7 +12,7 @@ books:
   api: http://howardlewisship.com/io.aviso/rook/
   github: https://github.com/AvisoNovate/rook  
   pages: [index.ad, getting-started.ad, arguments.ad, namespaces.ad, async.ad, 
-    end-to-end.ad, loopbacks.ad]
+    end-to-end.ad, loopbacks.ad, dev.ad]
   
 - title: Twixt
   dir: /twixt

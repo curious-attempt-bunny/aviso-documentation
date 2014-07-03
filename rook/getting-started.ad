@@ -119,7 +119,7 @@ several reasons), but it will suffice to show the essentials:
 (ns org.example.server
   (:require
     [ring.adapter.jetty :as jetty]
-    [io.aviso.rook :as rook)
+    [io.aviso.rook :as rook])
 
 (defn start-server
    [port]
@@ -131,7 +131,7 @@ several reasons), but it will suffice to show the essentials:
 
 The namespace-handler function is provided with details about one or more namespaces to match; in this case, the mapping is from the URI +/users+ to the `users` namespace.
 
-The wrap-with-standard-middleware function uses standard Ring middleware to handle JSON or EDN requests, to parse query and form parameters, and to convert parameter keys from strings to keywords. Some of the support in Ring, especially that related to argument resolution, requires this.
+The wrap-with-standard-middleware function uses standard Ring middleware to handle JSON or EDN requests, to parse query and form parameters, and to convert parameter keys from strings to keywords. Some of the support in Rook, especially that related to argument resolution, requires this.
 
 The result is a Ring request handler that takes care of dispatch directly to the request handler function (as well as quite a few things we have yet to discuss).
 

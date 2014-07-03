@@ -56,10 +56,13 @@ The loopback is created simply by using wrap-with-loopback.
      [["users"] org.example.resources.users]
      [["orders"] org.example.resources.orders]
      ...)
-     async/wrap-with-loopback))
+     async/wrap-with-loopback
+     async/wrap-with-standard-middleware))
 ----
 
 Obviously, a real example would include more resources and more middleware.
+
+It's important that the standard middleware (responsible for parsing JSON or EDN into Clojure data) be _outside_ the loopback.
 
 == Invoking the Loopback
 
@@ -71,7 +74,7 @@ Obviously, a real example would include more resources and more middleware.
   (fn [request]
     (async/safe-go request
       (-> request
-          :loopback-handler
+          (rook/get-injection :loopback-handler)
           client/new-request
           (client/to :get :users (-> request :params :user-id))
           (client/with-parameters {:password (-> request :params :password)})

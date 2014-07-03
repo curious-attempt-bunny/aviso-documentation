@@ -56,10 +56,10 @@ The :async? flag makes a few changes:
 
 * The returned handler will take a Ring request map, and return a channel that will return 
   a Ring response map.
-* The request handler functions must also return a channel, not the request map.
+* The resource handler functions must also return a channel, not the request map.
 * Any middleware used will have to be _async aware_.
 
-If you are using this inside a typical server, via ring.adapter.jetty/run-jetty
+If you are using this inside a typical server, via ring.adapter.jetty/run-jetty,
 you will need to make a small addition: to convert from an async response back to
 a normal response.
 
@@ -70,6 +70,7 @@ a normal response.
       [["orders"] 'org.example.resources.orders]
       [["users"] 'org.example.resources.users])
     async/async-handler->ring-handler
+    rook/wrap-with-standard-middleware)
 ----
 
 async-handler->ring-handler is defined by the io.aviso.rook.async namespace; it uses

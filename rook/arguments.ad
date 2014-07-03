@@ -61,9 +61,13 @@ TIP: It is ok to use map destructuring on an argument, but then you must use the
 Here, Rook uses the argument's name, params, to determine what to inject (the :params key of the Ring request map).
 The argument is destructured to get the individual query parameters passed in the request.
 
+
+The set of supported convention names is extensible using the :arg-symbol->resolver key in the options map passed to namespace-handler.
+
+
 == Argument Tagging
 
-Another way to specify argument resolution is with metadata tags; these tags can have any value, and indicate a particular resolution.
+Another way to specify argument resolution is with metadata tags. The presence of the tag indicate a particular resolution (the value is ignored, but is usually the constant true).
 
 .Metadata Tags
 |===
@@ -106,6 +110,8 @@ In this example, the id argument is resolved from a route param (because the con
 WARNING: You should have at most one of these tags on any single parameter; having multiple
 will result in a runtime exception.
 
+The set of supported metadata tags is extensible using the :resolver-factories key in the options map passed to namespace-handler.
+
 == Argument Resolver Metadata
 
 An argument may have metadata with key :io.aviso.rook/resolver.
@@ -140,22 +146,15 @@ once.
   ...)     
 ----
 
-== Dynamic Argument Resolvers
-
-This is the older form of argument resolution used in Rook 0.1.9 and earlier; it is likely
-going to be removed in 0.1.10 so it is not currently discussed.
-
-Dynamic arguments must be resolved on every invocation of the request handler function; part of the focus in release 0.1.10 is to eliminate this dynamic search and instead statically determine (exclusively by metadata and conventions) what the correct
-argument resolver is for each argument of each function.
-
 == Resolver Priority
 
 Finding the argument resolver for an argument involves checks in the following order:
 
-* As a route parameter footnote:[If you define a keyword in a routing spec, that takes precedence over everything else; it is not possible to change the argument name or resolution strategy].
-* The namespace's :arg-resolvers metadata
 * The :io.aviso.rook/resolver metadata on the argument
+* The function's :arg-resolvers metadata footnote:[Remember, the namespace's metadata is merged into the fucntion's]
 * By metadata tag
 * By convention name
-* As a dynamic argument (see note above)
+* As a route parameter
 
+WARNING: Each argument to a request handler function *must* have an argument resolver or an exception will
+be thrown when constructing the namespace handler.
