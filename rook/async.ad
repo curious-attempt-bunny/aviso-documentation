@@ -78,6 +78,10 @@ a blocking take (<!!) to retrieve the response map, and returns that map.
 
 == Async Middleware
 
+NOTE: These examples are for asynchronous Ring middleware (used around the namespace handler); for link:middleware.html[namespace middleware]
+the concept is the same, but there's the extra metadata argument. Async namespace middleware
+are passed an async handler and metadata, and return a new async handler.
+
 Async middleware is just like traditional Rook middleware, except that it must
 return a channel, not a response map.
 
@@ -147,9 +151,9 @@ or returns the response unchanged.
 safe-go is a macro that builds on core.async's go, but generates a 500 response if the
 body of the macro throws an exception.
 
-== Sync Handlers
+== Sync Resource Handler Functions
 
-In many cases, perhaps the majority of cases, the resource handler functions do not peform an asynchronous
+In many cases, perhaps the majority of cases, the resource handler functions do not peform any asynchronous
 work; typically, they execute some number of database queries (which, since Java JDBC is a blocking API,
 can not benefit from asynchronicity). 
 

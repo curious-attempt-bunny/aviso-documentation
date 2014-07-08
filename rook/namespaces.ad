@@ -13,17 +13,8 @@ identify the exact resource handler function for the request,
 and invoke that function, passing the link:arguments.html[appropriate arguments].
 
 As a side note: each resource handler function (a function of many arguments) 
-will encapsulated as a Ring request handler (of function of a single argument, the Ring request map),
-then wrapped with a specific set of middleware. Some parts of the middleware are useful
-for Rook's execution, but the rest is open for application logic.
-
-This middleware is intended for purposes such as:
-
-* link:schema.html[Input validation]
-* User authentication
-* Protection against denial of service attacks
-* System metrics collection
-* etc.
+will be encapsulated as a Ring request handler (of function of a single argument, the Ring request map),
+then wrapped with a link:middleware.html[specific set of middleware].
 
 == Basic Namespace Mapping
 
@@ -53,44 +44,7 @@ request handler functions without sacrificing speed.
 You may apply middleware to the functions of a namespace, by providing a middleware
 function after the namespace symbol.
 
-
-[source,clojure]
-----
-(namespace-handler
-  [["orders"] 'org.example.resources.orders auth-middleware]
-  [["users"] 'org.example.resources.users auth-middleware])
-----
-
-_Currently_ the function is a standard Rook middleware function:  A function that accepts
-a handler and return a new handler.
-
-Rook places a new key into the Ring request map, :rook. 
-This is a map that contains some Rook internal data, but also a :metadata key.
-
-:metadata contains a merge of the function's metadata, with that of the containing namespace. The function's metadata has precendence.
-
-In this way, middleware can check for certain conditions in the request or the metadata.
-
-For example:
-
-[source,clojure]
-----
-(defn wrap-permissions-auth
-  "Adds authentication that, when the :required-permissions metadata is present, ensures that
-  the user (identified via authentication headers) has the necessary permissions.
-  Permission names may be identified as strings or keywords."
-  [handler]
-  (fn [request]
-    (if-let [permissions (-> request :rook :metadata :required-permissions to-permission-set)]
-      (check-for-permissions handler request permissions)
-      (handler request))))
-----
-
-On every request, the :required-permissions key of the function's metadata will be checked; if it is present, then the user will be authenticated and permissions enforced.      
-
-WARNING: We are considering some further changes to Rook that will slightly change
-the definition of middleware applied inside the namespace handler; more metadata about
-the resource handler function will be passed to the wrapping functions.
+link:middleware.html[Namespace middleware] is a bit different from normal Ring middleware.
 
 == Default Middleware
 
@@ -108,6 +62,18 @@ possible to define the default middleware for namespaces.
 ----
 
 The default middleware only applies to namespaces with no explicit middleware.
+
+[source,clojure]
+----
+(namespace-handler
+  {:default-middleware standard-middleware}
+  [["status"] 'org.example.resources.status]
+  [["orders"] 'org.example.resources.orders auth-middleware]
+  [["users"] 'org.example.resources.users auth-middleware])
+----
+
+In this example, the /status resource uses the standard-middleware; the
+other two resources use the auth-middleware.
 
 == Nested Namespaces
 
@@ -151,7 +117,7 @@ the first nested namespace spec.
 
 It is common to want to place your resources under a common prefix; such as +/api+.
 
-Rook doesn't use link:https://github.com/weavejester/compojure[Compojure] (which as a context macro for this purpose).
+Rook doesn't use link:https://github.com/weavejester/compojure[Compojure] (which has a context macro for this purpose).
 
 Instead another namespace-handler option can be used:  :context-pathvec.
 

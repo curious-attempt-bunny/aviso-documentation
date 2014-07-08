@@ -1,10 +1,10 @@
 ---
-title: Developer Friendly
+title: Developer Features
 ---
 
 We regularly develop Rook, and application built in Rook, using a live REPL
 inside IntelliJ.
-We use link:https://cursiveclojure.com/[Cursive], an excellent plugin.
+We use link:https://cursiveclojure.com/[Cursive], an excellent IntelliJ plugin.
 
 Cursive handles most aspects of code reloading automatically, but it isn't enough on its own.
 
@@ -74,7 +74,7 @@ When the :reload option is true, then construct-handler will rebuild the handler
 
 This may seem slow, it is not; Clojure is plenty fast enough to build even very large dispatchers in milliseconds, perfect for testing. footnote:[The only really slow thing in Clojure is initial startup.] 
 
-TIP: Though you do need to be aware of resources such as caches and database connection pools; you
+TIP: You do need to carefully consider resources such as caches and database connection pools; you
 don't want to re-create those on every request!
 
 Notice that it is the org.example.server/app Var that is passed in, not the function inside the Var.

@@ -52,7 +52,8 @@ The loopback is created simply by using wrap-with-loopback.
 .Example
 [source,clojure]
 ----
-(-> (namespace-handler {:async? true}
+(-> (namespace-handler {:async? true
+                        :default-middleware wrap-with-password-check}
      [["users"] org.example.resources.users]
      [["orders"] org.example.resources.orders]
      ...)
@@ -70,7 +71,7 @@ It's important that the standard middleware (responsible for parsing JSON or EDN
 [source,clojure]
 ----
 (defn wrap-with-password-check
-  [handler]
+  [handler metadata]
   (fn [request]
     (async/safe-go request
       (-> request

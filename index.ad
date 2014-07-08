@@ -2,14 +2,8 @@
 title: Welcome
 ---
 
-[lead]
---
-Documentation is currently being generated and converted. In addition, Rook
-is undergoing some significant changes.
---
-
-At http://www.aviso.io/[Aviso] we're excited to use Clojure, and excited to
-contibute back as much as we can as open source.
+At http://www.aviso.io/[Aviso] we're excited to use Clojure, and equally
+excited to contibute back as much as we can as open source.
 
 All of our libraries use the Apache Software License 2.0.
 
