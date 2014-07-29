@@ -166,7 +166,7 @@ a channel.
 ----
 (def index 
   {:sync true}
-  [id ^:injected db-channel]
+  [id ^:injected db-conn]
   ...)
 ----
 

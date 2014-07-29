@@ -7,7 +7,7 @@ Rook supports namespace middleware, wrappers around resource handler functions.
 
 Namespace middleware is intended for purposes such as:
 
-* link:schema.html[Input validation]
+* link:validation.html[Input validation]
 * User authentication
 * Protection against denial of service attacks
 * System metrics collection
@@ -55,6 +55,8 @@ The compose-middleware macro does that. It is patterned after the Clojure -> thr
 [source,clojure]
 ----
 (compose-middleware 
+  (rv/wrap-with-response-validation development-mode)
+  sv/wrap-with-schema-validation
   (wrap-with-activity-tracking :user)
   wrap-with-authentication)
 ----
@@ -67,6 +69,8 @@ Each form is modified so that the first two parameters passed are the current ha
 
 compose-middleware chains these expressions together along with the logic for handling a nil value from
 any composed middleware expression.
+
+The result is a function that accepts an initial handler and metadata, and returns the final handler.
 
 
   
