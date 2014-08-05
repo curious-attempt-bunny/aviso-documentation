@@ -91,7 +91,7 @@ If you want to match a URI such as PUT +/users/_12345_/activate+, you would map 
 
 [source,clojure]
 ----
-(defn activate 
+(defn activate
   {:route-spec [:put [:id "activate"]]
   [id]
   ...)
@@ -100,8 +100,8 @@ If you want to match a URI such as PUT +/users/_12345_/activate+, you would map 
 Alternately, you can use :path-spec metadata:
 
 [source,clojure]
- ----
-(defn activate 
+----
+(defn activate
   {:path-spec [:put "/:id/activate"]]
   [id]
   ...)
