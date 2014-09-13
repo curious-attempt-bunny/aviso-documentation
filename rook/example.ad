@@ -1,0 +1,34 @@
+---
+title: Example
+---
+
+= Configure Dependencies
+
+First, you need to specify your dependencies for http://leiningen.org/[leiningen].
+
+.project.clj
+{% clj https://raw.githubusercontent.com/curious-attempt-bunny/rook-example/master/project.clj %}
+
+= Configure the Server
+
+Next, you need to configure the server and define its handlers.
+
+.src/org/example/server.clj
+{% clj https://raw.githubusercontent.com/curious-attempt-bunny/rook-example/master/src/org/example/server.clj %}
+
+= Define a Resource
+
+Finally, you need to define a resource for the /counters URI.
+
+.src/org/example/resources/counters.clj
+{% clj https://raw.githubusercontent.com/curious-attempt-bunny/rook-example/master/src/org/example/resources/counters.clj %}
+
+= Launch!
+
+Start up the server: `lein run`.
+
+List the counters using: `curl http://localhost:8080/counters`.
+
+Create a new counter using: `curl -X POST http://localhost:8080/counters?id=baz`.
+
+Increment an existing counter using: `curl -X PUT http://localhost:8080/counters/foo`.
