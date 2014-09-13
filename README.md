@@ -10,6 +10,8 @@ Plugin sources:
 
 ## Building locally
 
+Install bundler: `gem install bundler`.
+
 Run the command `bundle exec jekyll serve -w`.
 
 This builds documentation to the `_site` directory, and watches for changes.
