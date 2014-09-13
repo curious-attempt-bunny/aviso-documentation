@@ -11,7 +11,7 @@ books:
   dir: /rook
   api: http://howardlewisship.com/io.aviso/rook/
   github: https://github.com/AvisoNovate/rook  
-  pages: [index.ad, getting-started.ad, arguments.ad, namespaces.ad,
+  pages: [index.ad, example.ad, getting-started.ad, arguments.ad, namespaces.ad,
     middleware.ad, validation.ad, injection.ad, async.ad, 
     end-to-end.ad, loopbacks.ad, dev.ad]
 
