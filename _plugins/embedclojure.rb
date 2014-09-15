@@ -1,16 +1,13 @@
-require 'uri'
-require 'net/http'
-
 module Jekyll
   module Converters
     class EmbedClojure < ::Liquid::Tag
-      def initialize(tag_name, url, tokens)
-        @url = URI(url)
+      def initialize(tag_name, path, tokens)
+        @path = File.join(File.dirname(__FILE__),'..', path.strip)
         super
       end
 
       def content
-        Net::HTTP.get(@url)
+        File.read(@path)
       end
 
       def render(context)
