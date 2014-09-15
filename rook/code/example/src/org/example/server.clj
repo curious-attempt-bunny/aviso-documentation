@@ -12,4 +12,7 @@
 	                   head/wrap-head)]
      (jetty/run-jetty handler {:port port :join? false})))
 
-(defn main [] (start-server 8080))
+(defn main []
+  (do
+    (println "Running.")
+    (start-server 8080)))
