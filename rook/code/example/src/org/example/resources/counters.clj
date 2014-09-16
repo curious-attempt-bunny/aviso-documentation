@@ -10,13 +10,13 @@
 
 ; POST /counters?id=:id
 (defn create [^:param id]
-	(swap! counters #(assoc % id (get % id 0)))
-	{:status 200 :body (str (@counters id))})
+  (swap! counters #(assoc % id (get % id 0)))
+  {:status 200 :body (str (@counters id))})
 
 ; PUT /counters/:id
 (defn update [id]
-	(swap! counters #(assoc % id (inc (get % id 0))))
-	{:status 200 :body (str (@counters id))})
+  (swap! counters #(assoc % id (inc (get % id 0))))
+  {:status 200 :body (str (@counters id))})
 
 ; PATCH /counters/:id
 (defn patch [id] (update id))

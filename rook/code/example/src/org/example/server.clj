@@ -5,11 +5,11 @@
     [ring.middleware.head :as head]))
 
 (defn start-server
-	[port]
+  [port]
   (let [handler (-> (rook/namespace-handler
                      [["counters"] 'org.example.resources.counters])
-	                   rook/wrap-with-standard-middleware
-	                   head/wrap-head)]
+                     rook/wrap-with-standard-middleware
+                     head/wrap-head)]
      (jetty/run-jetty handler {:port port :join? false})))
 
 (defn main []
