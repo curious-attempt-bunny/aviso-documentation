@@ -7,7 +7,7 @@ title: Example
 First, you need to specify your dependencies for http://leiningen.org/[leiningen].
 
 .project.clj
-{% clj rook/code/example/project.clj %}
+{% clj rook/code/example/minimal-project.clj %}
 
 = Configure the Server
 
