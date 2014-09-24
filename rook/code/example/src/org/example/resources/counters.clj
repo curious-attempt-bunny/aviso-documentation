@@ -4,23 +4,23 @@
 
 ; GET /counters
 (defn index
-	[]
-	{:status 200 :body (str @counters)})
+    []
+    {:status 200 :body (str @counters)})
 
 ; GET /counters/:id
 (defn show
-	[id]
-	{:status 200 :body (str (@counters id))})
+    [id]
+    {:status 200 :body (str (@counters id))})
 
 ; POST /counters?id=:id
 (defn create
-	[^:param id]
-  (swap! counters #(assoc % id (get % id 0)))
-	{:status 200 :body (str (@counters id))})
+    [^:param id]
+    (swap! counters #(assoc % id (get % id 0)))
+    {:status 200 :body (str (@counters id))})
 
 ; PUT /counters/:id/increment
 (defn increment
-	{:route-spec [:put [:id "increment"]]}
-	[id]
-  (swap! counters #(assoc % id (inc (get % id 0))))
-  {:status 200 :body (str (@counters id))})
+    {:route-spec [:put [:id "increment"]]}
+    [id]
+    (swap! counters #(assoc % id (inc (get % id 0))))
+    {:status 200 :body (str (@counters id))})
