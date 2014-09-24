@@ -31,4 +31,4 @@ List the counters using: `curl http://localhost:8080/counters`.
 
 Create a new counter using: `curl -X POST http://localhost:8080/counters?id=baz`.
 
-Increment an existing counter using: `curl -X PUT http://localhost:8080/counters/foo`.
+Increment an existing counter using: `curl -X PUT http://localhost:8080/counters/foo/increment`.
